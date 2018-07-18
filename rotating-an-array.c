@@ -2,6 +2,7 @@
 Author: Manohar Mukku
 Date: 17.07.2018
 Desc: GeeksforGeeks - Arrays - Rotating an Array
+Link: https://practice.geeksforgeeks.org/problems/reversal-algorithm/0/
 */
 
 #include <stdio.h>

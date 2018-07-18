@@ -2,6 +2,7 @@
 Author: Manohar Mukku
 Date: 17.07.2018
 Desc: GeeksforGeeks - Arrays - Rotate Array by n elements
+Link: https://practice.geeksforgeeks.org/problems/rotate-array-by-n-elements/0/
 */
 
 #include <stdio.h>
