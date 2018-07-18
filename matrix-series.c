@@ -2,10 +2,13 @@
 Author: Manohar Mukku
 Date: 17.07.2018
 Desc: GeeksforGeeks - Sudo Placement [1.2] - Matrix Series
+Link: https://practice.geeksforgeeks.org/contest-problem/spp-matrix-series/0/
 */
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#define mod 1000000007
 
 int** create_matrix(int n) {
     int** matrix = (int**)calloc(n, sizeof(int*));
@@ -31,7 +34,7 @@ int** matmul(int** m1, int** m2, int n) {
         for (j = 0; j < n; j++) {
             result[i][j] = 0;
             for (k = 0; k < n; k++) {
-                result[i][j] += (m1[i][k] * m2[k][j]);
+                result[i][j] = ((long long)(result[i][j]%mod) + (((long long)(m1[i][k] % mod) * (long long)(m2[k][j] % mod)) % mod)) % mod;
             }
         }
     }
@@ -47,8 +50,6 @@ int** matrix_transpose(int** matrix, int n) {
         for (j = 0; j < n; j++)
             result[i][j] = matrix[j][i];
 
-    //free_matrix(matrix, n);
-
     return result;
 }
 
@@ -62,22 +63,23 @@ int** identity_matrix(int n) {
     return identity;
 }
 
-int** matrix_power(int** matrix, int n, int power) {
+int** matrix_power(int** matrix, int n, long long power) {
     if (power == 0)
         return identity_matrix(n);
     if (power == 1)
         return matrix;
 
+    if (power & 1)
+        return matmul(matrix, matrix_power(matrix, n, power-1), n);
+
     int** aux = matrix_power(matrix, n, power/2);
 
-    if (power % 2 == 0) 
-        return matmul(aux, aux, n);
-    else
-        return matmul(aux, matmul(aux, aux, n), n);
+    return matmul(aux, aux, n);
 }
 
-int fib_m (int n) {
-    int* fib = (int*)malloc(n * sizeof(int));
+long long fib_m (int n) {
+    long long* fib = (long long*)malloc(n * sizeof(long long));
+
     fib[0] = 1;
     fib[1] = 0;
 
@@ -85,11 +87,16 @@ int fib_m (int n) {
     for (i = 2; i < n; i++)
         fib[i] = fib[i-1] + fib[i-2];
 
-    return fib[n-1];
+    long long result = fib[n-1];
+
+    free(fib);
+
+    return result;
 }
 
-int fib_mt (int n) {
-    int* fib = (int*)malloc(n * sizeof(int));
+long long fib_mt (int n) {
+    long long* fib = (long long*)malloc(n * sizeof(long long));
+
     fib[0] = 0;
     fib[1] = 1;
 
@@ -97,7 +104,11 @@ int fib_mt (int n) {
     for (i = 2; i < n; i++)
         fib[i] = fib[i-1] + fib[i-2];
 
-    return fib[n-1];
+    long long result = fib[n-1];
+
+    free(fib);
+
+    return result;
 }
 
 int main() {
@@ -116,8 +127,8 @@ int main() {
                 scanf ("%d", &matrix[i][j]);
 
 
-        int power_m = fib_m(n);
-        int power_mt = fib_mt(n);
+        long long power_m = fib_m(n);
+        long long power_mt = fib_mt(n);
 
         int** aux1 = matrix_power(matrix, k, power_m);
         int** aux2 = matrix_power(matrix_transpose(matrix, k), k, power_mt);
@@ -131,10 +142,8 @@ int main() {
             printf("\n");
         }
 
-        //free_matrix(aux1, k);
-        //free_matrix(aux2, k);
-        //free_matrix(matrix, k);
-        //free_matrix(result, k);
+        free_matrix(matrix, k);
+        free_matrix(result, k);
     }
     
     return 0;
