@@ -2,6 +2,7 @@
 Author: Manohar Mukku
 Date: 17.07.2018
 Desc: GeeksforGeeks - Sudo Placement [1.2] - Beautiful pairs
+Link: https://practice.geeksforgeeks.org/contest-problem/spp-beautiful-pairs/0/
 */
 
 #include <stdio.h>
